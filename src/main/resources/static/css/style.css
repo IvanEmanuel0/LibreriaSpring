@@ -1,0 +1,201 @@
+*, *:after, *:before {
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+  }
+  body{
+    font-family: 'Montserrat', sans-serif;
+    background-image: url('../img/fondo-plateado.png');
+  }
+  .red {
+    background: rgb(127, 26, 26);
+    color: #fff;
+  }
+
+  .titulo-superior{
+      padding-left: 2%;
+  }
+  
+  .navbar {
+    padding: 10px;
+  }
+  
+  #logo {
+    display: inline-block;
+    margin-top: 7px;
+    color: #fff;
+  }
+  
+  #link {
+    color: #fff;
+    
+    margin: 0 10px;
+  }
+
+  .link-submenu{
+    margin-left: 20px;
+  }
+  
+  i { margin: 0 7px; }
+  #sidebarCollapse {
+    color: #fff;
+    background: transparent;
+    outline: none;
+    margin: 0 20px;
+  }
+  #sidebarCollapse:hover {
+    color: #2abdfc;
+    background: #fff;
+    outline: none;
+  }
+  .wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+  }.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+  }#sidebar {
+      min-width: 250px;
+      max-width: 250px;
+      margin-top: 70px;
+      background: rgb(127, 26, 26);
+      color: #fff;
+      transition: all 0.3s;
+  }
+  #sidebar.active{
+      margin-left: -250px;
+  }
+  
+  #sidebar .sidebar-header{
+      padding: 20px;
+      background: #6a76f8;
+  }
+  #sidebar ul.components{
+      padding: 20px 0px;
+  }
+  
+  #sidebar ul p{
+      padding: 10px;
+      font-size: 1.1em;
+      display: block;
+  }
+  
+  #sidebar ul li a{
+    border-bottom: 1px solid rgb(100, 100, 100);
+      padding: 10px 10px 10px 20px;
+      font-size: 1em;
+      display: block;
+      color: #fff;
+  
+  }
+  #sidebar ul li {
+    padding: 0px 10px;
+  }
+  #sidebar ul li ul li {
+    padding-left: 15px;
+    font-size: 0.8em;
+  }
+  #sidebar ul li a:hover {
+  
+      text-decoration: none;
+  }
+  
+  #sidebar ul li.active>a,
+  a[aria-expanded="true"] {
+      color: #fff;
+      background: rgb(99, 100, 9);
+  }
+  a[data-toggle="collapse"] {
+      position: relative;
+  }
+  .dropdown-toggle::after {
+      display: block;
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
+  }
+  
+  #content {
+      width: 100%;
+      padding: 40px;
+      min-height: 88.8vh;
+      transition: all 0.3s;
+      margin-top: 70px;
+  }
+  
+  label {
+    color: #fff;
+    font-size: 1.2em;
+  }
+  
+  
+  
+  .bg-contenido {
+    border: rgb(0,0,0) 2px solid;
+    background-color: rgba(0, 0, 0, 0.733);
+    border-radius: 25px;
+  }
+  
+  .form-group .form-control{
+    color: rgb(255, 255, 255);
+    border: none;
+    background: none;
+    border-radius: 0;
+    border-bottom: 2px solid #ffffff;
+    width: 100%;
+  }
+  
+  option {
+    color: black;
+  }
+  
+  .form-control:focus{
+    border: none;
+    box-shadow: none;
+    box-shadow: 0px 0px 6px rgb(255, 255, 255);
+  }   
+  
+  .btn-registrar{
+    text-transform: uppercase;
+  }
+  
+  td, tr {
+    color: rgb(255, 255, 255);
+  }
+  
+  .acciones {
+    width: 110px;
+  }
+  
+  .fa-edit{
+    color: yellow;
+  }
+  
+  .fa-trash-alt {
+    color: red;
+  }
+
+  @media (max-width:800px) {
+    #sidebar {
+      margin-left: -250px;}
+    #sidebar.active{
+      margin-left: 0px;
+    }
+    #sidebarCollapse span{
+      display: none;
+    }
+    .card {
+      width:100%;
+    }
+  }
+  @media (max-width:400px) {
+    #sidebar {
+      margin-top: 60px;
+    }
+    #logo {
+      display: none;
+    }
+  }
