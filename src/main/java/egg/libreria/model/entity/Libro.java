@@ -42,7 +42,7 @@ public class Libro {
         this.anio = anio;
         this.ejemplares = ejemplares;
         this.ejemplaresPrestados = 0;
-        this.ejemplaresRestantes = this.ejemplares-this.ejemplaresPrestados;
+        this.ejemplaresRestantes = this.ejemplares;
         this.alta = alta;
         this.autor = autor;
         this.editorial = editorial;

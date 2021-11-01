@@ -80,6 +80,32 @@
 						</li>
 					</ul>
 				</li>
+				<li class="nav-item">
+					<a href="#clienteSubmenu" data-toggle="collapse" aria-expanded="false" class="nav-link dropdown-toggle">
+						<i class="fas fa-book"></i>Clientes
+					</a>
+					<ul class="collapse list-unstyled" id="clienteSubmenu">
+						<li class="nav-item">
+							<a th:href="@{/clientes/crear}" class="nav-link link-submenu">Nuevo cliente</a>
+						</li>
+						<li class="nav-item">
+							<a th:href="@{/clientes}" class="nav-link link-submenu">Lista de clientes</a>
+						</li>
+					</ul>
+				</li>
+				<li class="nav-item">
+					<a href="#prestamoSubmenu" data-toggle="collapse" aria-expanded="false" class="nav-link dropdown-toggle">
+						<i class="fas fa-book"></i>Prestamos
+					</a>
+					<ul class="collapse list-unstyled" id="prestamoSubmenu">
+						<li class="nav-item">
+							<a th:href="@{/prestamos/crear}" class="nav-link link-submenu">Nuevo prestamo</a>
+						</li>
+						<li class="nav-item">
+							<a th:href="@{/prestamos}" class="nav-link link-submenu">Lista de prestamos</a>
+						</li>
+					</ul>
+				</li>
 			</ul>
 		</nav>
 	</div>

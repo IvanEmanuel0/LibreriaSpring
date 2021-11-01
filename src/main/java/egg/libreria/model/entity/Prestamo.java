@@ -1,10 +1,16 @@
 package egg.libreria.model.entity;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
+@Setter
+@Getter
 public class Prestamo {
 
     @Id
@@ -12,10 +18,10 @@ public class Prestamo {
     private Integer id;
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    private LocalDate fechaPrestamo;
+    private Date fechaPrestamo;
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    private LocalDate fechaDevolucion;
+    private Date fechaDevolucion;
     @Column(nullable = false)
     private Boolean alta;
     @ManyToOne
@@ -27,59 +33,11 @@ public class Prestamo {
 
     }
 
-    public Prestamo(LocalDate fechaPrestamo, LocalDate fechaDevolucion, Libro libro, Cliente cliente, Boolean alta) {
+    public Prestamo(Date fechaPrestamo, Date fechaDevolucion, Libro libro, Cliente cliente, Boolean alta) {
         this.fechaPrestamo = fechaPrestamo;
         this.fechaDevolucion = fechaDevolucion;
-        this.libro = libro;
-        this.cliente = cliente;
         this.alta = alta;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public LocalDate getFechaPrestamo() {
-        return fechaPrestamo;
-    }
-
-    public void setFechaPrestamo(LocalDate fechaPrestamo) {
-        this.fechaPrestamo = fechaPrestamo;
-    }
-
-    public LocalDate getFechaDevolucion() {
-        return fechaDevolucion;
-    }
-
-    public void setFechaDevolucion(LocalDate fechaDevolucion) {
-        this.fechaDevolucion = fechaDevolucion;
-    }
-
-    public Boolean getAlta() {
-        return alta;
-    }
-
-    public void setAlta(Boolean alta) {
-        this.alta = alta;
-    }
-
-    public Libro getLibro() {
-        return libro;
-    }
-
-    public void setLibro(Libro libro) {
         this.libro = libro;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 }

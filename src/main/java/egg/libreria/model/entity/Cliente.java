@@ -23,6 +23,14 @@ public class Cliente {
     public Cliente() {
     }
 
+    public Cliente(Long dni, String nombre, String apellido, String telefono, Boolean alta) {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.telefono = telefono;
+        this.alta = alta;
+    }
+
     public Integer getId() {
         return id;
     }
