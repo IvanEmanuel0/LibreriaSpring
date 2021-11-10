@@ -1,7 +1,9 @@
 package egg.libreria.service;
 
+import egg.libreria.exception.MiException;
 import egg.libreria.model.entity.Cliente;
 import egg.libreria.repository.ClienteRepository;
+import egg.libreria.utilities.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
@@ -22,29 +24,64 @@ public class ClienteService {
     }
 
     @Transactional(readOnly = true)
-    public Cliente buscarPorId(Integer id) {
+    public Cliente buscarPorId(Integer id) throws MiException {
+        try {
+            Util.esNumero(Integer.toString(id));
+        } catch (MiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
+        }
         Optional<Cliente> optionalCliente = clienteRepository.findById(id);
         return optionalCliente.orElse(null);
     }
 
     @Transactional
-    public void crear(Long dni, String nombre, String apellido, String telefono) {
-        clienteRepository.save(new Cliente(dni, nombre, apellido, telefono, true));
-    }
-
-    @Transactional
-    public void modificar(Integer id, Long dni, String nombre, String apellido, String telefono) {
-        Cliente cliente = buscarPorId(id);
-        if(cliente != null){
-            cliente.setDni(dni);
-            cliente.setNombre(nombre);
-            cliente.setApellido(apellido);
-            cliente.setTelefono(telefono);
-            clienteRepository.save(cliente);
+    public void crear(Long dni, String nombre, String apellido, String telefono) throws MiException {
+        try {
+            Util.validarDNI(Long.toString(dni));
+            Util.sonLetras(nombre);
+            Util.sonLetras(apellido);
+            Util.esNumero(telefono);
+            clienteRepository.save(new Cliente(dni, nombre, apellido, telefono, true));
+        } catch (MiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
         }
     }
 
-    public void eliminar(Integer id) {
-        clienteRepository.deleteById(id);
+    @Transactional
+    public void modificar(Integer id, Long dni, String nombre, String apellido, String telefono) throws MiException {
+        try {
+            Util.validarDNI(Long.toString(dni));
+            Util.sonLetras(nombre);
+            Util.sonLetras(apellido);
+            Util.esNumero(telefono);
+            Cliente cliente = buscarPorId(id);
+            if(cliente != null){
+                cliente.setDni(dni);
+                cliente.setNombre(nombre);
+                cliente.setApellido(apellido);
+                cliente.setTelefono(telefono);
+                clienteRepository.save(cliente);
+            }
+        } catch (MiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    @Transactional
+    public void eliminar(Integer id) throws MiException {
+        try {
+            Util.esNumero(Integer.toString(id));
+            clienteRepository.deleteById(id);
+        } catch (MiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }

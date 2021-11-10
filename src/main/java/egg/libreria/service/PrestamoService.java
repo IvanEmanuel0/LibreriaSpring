@@ -1,9 +1,11 @@
 package egg.libreria.service;
 
+import egg.libreria.exception.MiException;
 import egg.libreria.model.entity.Cliente;
 import egg.libreria.model.entity.Libro;
 import egg.libreria.model.entity.Prestamo;
 import egg.libreria.repository.PrestamoRepository;
+import egg.libreria.utilities.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,43 +29,66 @@ public class PrestamoService {
     }
 
     @Transactional(readOnly = true)
-    public Prestamo buscarPorId(Integer id) {
+    public Prestamo buscarPorId(Integer id) throws MiException {
+        try {
+            Util.esNumero(Integer.toString(id));
+        } catch(MiException e) {
+            throw e;
+        } catch(Exception e) {
+            throw e;
+        }
         Optional<Prestamo> prestamoOptional = prestamoRepository.findById(id);
         return prestamoOptional.orElse(null);
     }
 
     @Transactional
-    public Boolean crear(Date fechaPrestamo, Date fechaDevolucion, Libro libro, Cliente cliente) {
-        if (hayStock(libro)) {
-
+    public void crear(Date fechaPrestamo, Date fechaDevolucion, Libro libro, Cliente cliente) throws MiException {
+        try {
+            Util.validarCronologia(fechaPrestamo, fechaDevolucion);
+            Util.hayStock(libro);
             prestarLibro(libro);
             prestamoRepository.save(new Prestamo(fechaPrestamo, fechaDevolucion, libro, cliente, true));
-            return true;
+        } catch (MiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
         }
-        return false;
     }
 
     @Transactional
-    public void modificar(Integer id, Date fechaPrestamo, Date fechaDevolucion, Libro libro, Cliente cliente) {
-    Prestamo prestamo = buscarPorId(id);
-    if(prestamo != null){
-        prestamo.setFechaPrestamo(fechaPrestamo);
-        prestamo.setFechaDevolucion(fechaDevolucion);
-        prestamo.setCliente(cliente);
-        prestamo.setLibro(libro);
-        prestamoRepository.save(prestamo);
+    public void modificar(Integer id, Date fechaPrestamo, Date fechaDevolucion, Libro libro, Cliente cliente) throws MiException {
+        try {
+            Util.validarCronologia(fechaPrestamo, fechaDevolucion);
+            Prestamo prestamo = buscarPorId(id);
+            if(prestamo != null) {
+                prestamo.setFechaPrestamo(fechaPrestamo);
+                prestamo.setFechaDevolucion(fechaDevolucion);
+                prestamo.setCliente(cliente);
+                prestamo.setLibro(libro);
+                prestamoRepository.save(prestamo);
+            }
+        } catch (MiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
         }
-
     }
 
     @Transactional
-    public void eliminar(Integer id) {
-        prestamoRepository.deleteById(id);
+    public void eliminar(Integer id) throws MiException {
+        try {
+            Util.esNumero(Integer.toString(id));
+            prestamoRepository.deleteById(id);
+        } catch (MiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
-    private Boolean hayStock(Libro libro){
+    /*private Boolean hayStock(Libro libro){
         return libro.getEjemplaresRestantes() > 0;
-    }
+    }*/
 
     public void prestarLibro(Libro libro){
         libro.setEjemplaresRestantes(libro.getEjemplaresRestantes()-1);

@@ -1,9 +1,12 @@
 package egg.libreria.service;
 
+import egg.libreria.exception.MiException;
 import egg.libreria.model.entity.Editorial;
 import egg.libreria.repository.EditorialRepository;
 import java.util.List;
 import java.util.Optional;
+
+import egg.libreria.utilities.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,22 +23,52 @@ public class EditorialService {
     }
 
     @Transactional(readOnly = true)
-    public Editorial buscarPorId(Integer id) {
-        Optional<Editorial> optionalEditorial = editorialRepository.findById(id);
-        return optionalEditorial.orElse(null);
+    public Editorial buscarPorId(Integer id) throws MiException {
+        try{
+            Util.esNumero(Integer.toString(id));
+            Optional<Editorial> optionalEditorial = editorialRepository.findById(id);
+            return optionalEditorial.orElse(null);
+        } catch(MiException e) {
+            throw e;
+        } catch(Exception e) {
+            throw e;
+        }
     }
 
     @Transactional
-    public void crear(String nombre) {
-        editorialRepository.save(new Editorial(nombre, true));
+    public void crear(String nombre) throws MiException {
+        try {
+            Util.sonLetras(nombre);
+            editorialRepository.save(new Editorial(nombre, true));
+        } catch (MiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+    @Transactional
+    public void modificar(Integer id, String nombre) throws MiException {
+        try {
+            Util.esNumero(Integer.toString(id));
+            Util.sonLetras(nombre);
+            editorialRepository.modificar(id, nombre);
+        } catch (MiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
-    public void modificar(Integer id, String nombre) {
-        editorialRepository.modificar(id, nombre);
-    }
-
-    public void eliminar(Integer id) {
-        editorialRepository.deleteById(id);
+    @Transactional
+    public void eliminar(Integer id) throws MiException {
+        try {
+            Util.esNumero(Integer.toString(id));
+            editorialRepository.deleteById(id);
+        } catch (MiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
+        }
     }
     
 }

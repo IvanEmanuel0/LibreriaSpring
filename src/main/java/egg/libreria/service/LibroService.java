@@ -5,10 +5,13 @@
  */
 package egg.libreria.service;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
+import egg.libreria.exception.MiException;
 import egg.libreria.model.entity.Autor;
 import egg.libreria.model.entity.Editorial;
 import egg.libreria.model.entity.Libro;
 import egg.libreria.repository.LibroRepository;
+import egg.libreria.utilities.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,32 +31,62 @@ public class LibroService {
     }
 
     @Transactional(readOnly = true)
-    public Libro buscarPorId(Integer id) {
+    public Libro buscarPorId(Integer id) throws MiException {
+        try {
+            Util.esNumero(Integer.toString(id));
+        } catch (MiException e){
+            throw e;
+        } catch (Exception e) {
+            throw e;
+        }
         Optional<Libro> optionalLibro = libroRepository.findById(id);
         return optionalLibro.orElse(null);
     }
 
     @Transactional
-    public void crear(Long isbn, String titulo, Integer anio, Integer ejemplares, Autor autor, Editorial editorial) {
-        libroRepository.save(new Libro(isbn, titulo, anio, ejemplares, true, autor, editorial));
-    }
-
-    @Transactional
-    public void modificar(Integer id, Long isbn, String titulo, Integer anio, Integer ejemplares, Autor autor, Editorial editorial) {
-        Libro libro = buscarPorId(id);
-        if(libro != null){
-            libro.setIsbn(isbn);
-            libro.setTitulo(titulo);
-            libro.setAnio(anio);
-            libro.setEjemplares(ejemplares);
-            libro.setAutor(autor);
-            libro.setEditorial(editorial);
-            libroRepository.save(libro);
+    public void crear(Long isbn, String titulo, Integer anio, Integer ejemplares, Autor autor, Editorial editorial) throws MiException {
+        try {
+            Util.validarISBN(Long.toString(isbn));
+            Util.validarAnio(Integer.toString(anio));
+            Util.esNumero(Integer.toString(ejemplares));
+            libroRepository.save(new Libro(isbn, titulo, anio, ejemplares, true, autor, editorial));
+        } catch (MiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
         }
     }
 
     @Transactional
-    public void eliminar(Integer id) {
-        libroRepository.deleteById(id);
+    public void modificar(Integer id, Long isbn, String titulo, Integer anio, Integer ejemplares, Autor autor, Editorial editorial) throws MiException {
+        try {
+            Util.validarISBN(Long.toString(isbn));
+            Util.validarAnio(Integer.toString(anio));
+            Util.esNumero(Integer.toString(ejemplares));
+            Libro libro = buscarPorId(id);
+            if (libro != null) {
+                libro.setIsbn(isbn);
+                libro.setTitulo(titulo);
+                libro.setAnio(anio);
+                libro.setEjemplares(ejemplares);
+                libro.setAutor(autor);
+                libro.setEditorial(editorial);
+                libroRepository.save(libro);
+            }
+        } catch (MiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    @Transactional
+    public void eliminar(Integer id) throws MiException {
+        try {
+            Util.esNumero(Integer.toString(id));
+            libroRepository.deleteById(id);
+        } catch (MiException e) {
+            throw e;
+        }
     }
 }

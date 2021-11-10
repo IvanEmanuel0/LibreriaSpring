@@ -2,12 +2,22 @@ package egg.libreria.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import egg.libreria.model.entity.Libro;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.*;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
+@Setter
+@Getter
+@EntityListeners(AuditingEntityListener.class)
 public class Autor {
     
     @Id
@@ -15,6 +25,11 @@ public class Autor {
     private Integer id;
     @Column(nullable = false)
     private String nombre;
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime creacion;
+    @LastModifiedDate
+    private LocalDateTime modificacion;
     @Column(nullable = false)
     private Boolean alta;
     @OneToMany(mappedBy = "autor", fetch = FetchType.EAGER)
@@ -36,35 +51,4 @@ public class Autor {
         this.alta = alta;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Boolean getAlta() {
-        return alta;
-    }
-
-    public void setAlta(Boolean alta) {
-        this.alta = alta;
-    }
-
-    public List<Libro> getLibros() {
-        return libros;
-    }
-
-    public void setLibros(List<Libro> libros) {
-        this.libros = libros;
-    }
 }

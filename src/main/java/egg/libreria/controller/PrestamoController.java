@@ -1,11 +1,13 @@
 package egg.libreria.controller;
 
+import egg.libreria.exception.MiException;
 import egg.libreria.model.entity.Cliente;
 import egg.libreria.model.entity.Libro;
 import egg.libreria.model.entity.Prestamo;
 import egg.libreria.service.ClienteService;
 import egg.libreria.service.LibroService;
 import egg.libreria.service.PrestamoService;
+import egg.libreria.utilities.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -61,7 +63,11 @@ public class PrestamoController {
     @GetMapping("/editar/{id}")
     public ModelAndView editarPrestamo(@PathVariable Integer id) {
         ModelAndView mav = new ModelAndView("prestamo-formulario");
-        mav.addObject("prestamo", prestamoService.buscarPorId(id));
+        try {
+            mav.addObject("prestamo", prestamoService.buscarPorId(id));
+        } catch (MiException e) {
+            mav.addObject("error", e.getMessage());
+        }
         mav.addObject("libros", libroService.buscarTodos());
         mav.addObject("clientes", clienteService.buscarTodos());
         mav.addObject("titulo", "Editar Prestamo");
@@ -71,23 +77,37 @@ public class PrestamoController {
 
     @PostMapping("/guardar")
     public RedirectView guardar(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaPrestamo, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDevolucion, @RequestParam Libro libro, @RequestParam Cliente cliente, RedirectAttributes redirectAttributes) {
-        if(prestamoService.crear(fechaPrestamo, fechaDevolucion, libro, cliente)){
+        RedirectView redirectView = new RedirectView("/prestamos");
+        try {
+            prestamoService.crear(fechaPrestamo, fechaDevolucion, libro, cliente);
             redirectAttributes.addFlashAttribute("exito", "El prestamo se efectuó de manera exitosa.");
-        } else {
-            redirectAttributes.addFlashAttribute("error", "No se pudo efectuar el prestamo.");
+        } catch (MiException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            redirectView.setUrl("/prestamos/crear");
+        }
+        return redirectView;
+    }
+
+    @PostMapping("/modificar")
+    public RedirectView modificar(@RequestParam Integer id, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaPrestamo, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDevolucion, @RequestParam Libro libro, @RequestParam Cliente cliente, RedirectAttributes redirectAttributes) {
+        try {
+            prestamoService.modificar(id, fechaPrestamo, fechaDevolucion, libro, cliente);
+            redirectAttributes.addFlashAttribute("exito", "El prestamo se modificó correctamente.");
+        } catch (MiException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
         return new RedirectView("/prestamos");
     }
 
-    @PostMapping("/modificar")
-    public RedirectView modificar(@RequestParam Integer id, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaPrestamo, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaDevolucion, @RequestParam Libro libro, @RequestParam Cliente cliente) {
-        prestamoService.modificar(id, fechaPrestamo, fechaDevolucion, libro, cliente);
-        return new RedirectView("/prestamos");
-    }
-
     @PostMapping("/eliminar/{id}")
-    public RedirectView eliminar(@PathVariable Integer id) {
-        prestamoService.eliminar(id);
+    public RedirectView eliminar(@PathVariable Integer id, RedirectAttributes redirectAttributes) throws MiException {
+        try {
+            Util.esNumero(Integer.toString(id));
+            prestamoService.eliminar(id);
+            redirectAttributes.addFlashAttribute("exito", "El prestamo se elimino correctamente.");
+        } catch (MiException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
         return new RedirectView("/prestamos");
     }
 

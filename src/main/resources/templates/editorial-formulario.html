@@ -24,10 +24,11 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="row pt-5 pb-4">
-                                            <input th:field="*{id}" type="hidden">
+                                            <input th:field="*{id}" type="hidden"/>
                                             <div class="floating-form">
-                                                <input placeholder="Nombre" required th:field="*{nombre}" class="form-control" id="nombre" type="text">
                                                 <label for="nombre"></label>
+                                                <input placeholder="Nombre" name="nombre" required th:field="*{nombre}" class="form-control" id="nombre" type="text">
+                                                <div th:if="${error != null}" th:text="${error}" class="col-4 small alert-danger fade show" role="alert"></div>
                                                 <div class="invalid-feedback">El nombre es obligatorio</div>
                                             </div>
                                             <div class="row">

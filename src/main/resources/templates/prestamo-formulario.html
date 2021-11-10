@@ -24,6 +24,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <input th:field="*{id}" type="hidden">
+                                        <div th:if="${error != null}" th:text="${error}" class="col-4 small alert-danger fade show" role="alert"></div>
                                         <div class="row pt-5 pb-4">
                                             <div class="col-6">
                                                 <div class="fo rm-floating">
@@ -41,7 +42,7 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="f orm-floating">
-                                                    <select aria-label="Seleccionar Libro" class="from-select" th:field="*{libro}" id="libro">
+                                                    <select aria-label="Seleccionar Libro" class="form-select" th:field="*{libro}" id="libro">
                                                         <option selected value="">Seleccionar Libro</option>
                                                         <option th:each="libro : ${libros}" th:value="${libro.id}" th:text="${libro.titulo}"></option>
                                                     </select>
@@ -49,7 +50,7 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="f orm-floating">
-                                                    <select aria-label="Seleccionar Cliente" class="from-select" th:field="*{cliente}" id="cliente">
+                                                    <select aria-label="Seleccionar Cliente" class="form-select" th:field="*{cliente}" id="cliente">
                                                         <option selected value="">Seleccionar cliente</option>
                                                         <option th:each="cliente : ${clientes}" th:value="${cliente.id}" th:text="${cliente.nombre}"></option>
                                                     </select>

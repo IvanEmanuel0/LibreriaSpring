@@ -26,8 +26,12 @@
                                 <h5>Todavia no hay autores cargados</h5>
                                 <a th:href="@{/autores/crear}">Agregar autor</a>
                             </div>
-
-
+                        </div>
+                        <div th:if="${exito != null}"  class="col-6 alert alert-success alert-dismissible fade show" role="alert">
+                            <span th:text="${exito}"></span>
+                            <button type="button" class="close btn btn-success text-align-end" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div th:unless="${autores.isEmpty()}" class="bg-contenido">
 
@@ -77,7 +81,5 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/script.js"></script>
 </body>
 </html>
