@@ -44,10 +44,11 @@
                             <tr th:each="editorial : ${editoriales}">
                                 <td th:text="${editorial.nombre}"></td>
                                 <td class="col-md-4 px-md-2 d-flex justify-content-around w-100">
-                                    <a class="btn btn-secondary btn-sm" th:href="@{/editoriales/editar/__${editorial.id}__}">Editar</a>
-                                    <form method="post" th:action="@{/editoriales/eliminar/__${editorial.id}__}">
-                                        <button class="btn btn-danger btn-sm" type="submit">
-                                            Eliminar
+                                    <a th:if="${accion == 'eliminar'}" class="btn btn-secondary btn-sm" th:href="@{/editoriales/editar/__${editorial.id}__}">Editar</a>
+                                    <form method="post" th:action="@{/editoriales/__${accion}__/__${editorial.id}__}">
+                                        <button th:text="${accion == 'eliminar'} ? 'Deshabilitar' : 'Habilitar'"
+                                                th:classappend="${accion == 'eliminar'} ? 'btn-danger' : 'btn-success'"
+                                                class="btn btn-sm" type="submit">
                                         </button>
                                     </form>
                                 </td>

@@ -40,8 +40,24 @@ public class LibroController {
             mav.addObject("exito", flashMap.get("exito"));
             mav.addObject("error", flashMap.get("error"));
         }
+        mav.addObject("accion", "eliminar");
+        mav.addObject("titulo", "Lista de Libros");
+        mav.addObject("libros", libroService.buscarHabilitados());
+        return mav;
+    }
 
-        mav.addObject("libros", libroService.buscarTodos());
+    @GetMapping("/deshabilitados")
+    public ModelAndView mostrarDeshabilitados(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("libros");
+        Map<String, ?> flashMap= RequestContextUtils.getInputFlashMap(request);
+
+        if(flashMap != null) {
+            mav.addObject("exito", flashMap.get("exito"));
+            mav.addObject("error", flashMap.get("error"));
+        }
+        mav.addObject("accion", "habilitar");
+        mav.addObject("titulo", "Libros de Baja");
+        mav.addObject("libros", libroService.buscarDeshabilitados());
         return mav;
     }
 
@@ -49,8 +65,8 @@ public class LibroController {
     public ModelAndView crearLibro(){
         ModelAndView mav = new ModelAndView("libro-formulario");
         mav.addObject("libro", new Libro());
-        mav.addObject("editoriales", editorialService.buscarTodos());
-        mav.addObject("autores", autorService.buscarTodos());
+        mav.addObject("editoriales", editorialService.buscarHabilitados());
+        mav.addObject("autores", autorService.buscarHabilitados());
         mav.addObject("titulo", "Crear Libro");
         mav.addObject("accion", "guardar");
         return mav;
@@ -64,8 +80,8 @@ public class LibroController {
         } catch(MiException e) {
             mav.addObject("error", e.getMessage());
         }
-        mav.addObject("editoriales", editorialService.buscarTodos());
-        mav.addObject("autores", autorService.buscarTodos());
+        mav.addObject("editoriales", editorialService.buscarHabilitados());
+        mav.addObject("autores", autorService.buscarHabilitados());
         mav.addObject("titulo", "Editar Libro");
         mav.addObject("accion", "modificar");
         return mav;
@@ -110,6 +126,17 @@ public class LibroController {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
         return new RedirectView("/libros");
+    }
+
+    @PostMapping("/habilitar/{id}")
+    public RedirectView habilitar(@PathVariable Integer id, RedirectAttributes redirectAttributes){
+        try {
+            libroService.habilitar(id);
+            redirectAttributes.addFlashAttribute("exito", "El libro se eliminó correctamente.");
+        } catch (MiException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return new RedirectView("/libros/deshabilitados");
     }
 
 }

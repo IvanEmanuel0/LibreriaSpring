@@ -26,9 +26,12 @@ public class AutorService {
     private AutorRepository autorRepository;
 
     @Transactional(readOnly = true)
-    public List<Autor> buscarTodos() {
-        return autorRepository.findAll();
+    public List<Autor> buscarHabilitados() {
+        return autorRepository.autoresDeAlta();
     }
+
+    @Transactional(readOnly = true)
+    public List<Autor> buscarDeshabilitados(){ return autorRepository.autoresDeBaja();}
 
     @Transactional(readOnly = true)
     public Autor buscarPorId(Integer id) throws MiException {
@@ -78,6 +81,18 @@ public class AutorService {
             throw e;
         }
 
+    }
+
+    @Transactional
+    public void habilitar(Integer id) throws MiException{
+        try {
+            Util.esNumero(Integer.toString(id));
+            Autor autor = buscarPorId(id);
+            autor.setAlta(true);
+            autorRepository.save(autor);
+        } catch (MiException e) {
+            throw e;
+        }
     }
     
 }

@@ -31,8 +31,24 @@ public class ClienteController {
             mav.addObject("exito", flashMap.get("exito"));
             mav.addObject("error", flashMap.get("error"));
         }
+        mav.addObject("accion", "eliminar");
+        mav.addObject("titulo", "Lista de clientes");
+        mav.addObject("clientes", clienteService.buscarHabilitados());
+        return mav;
+    }
 
-        mav.addObject("clientes", clienteService.buscarTodos());
+    @GetMapping("/deshabilitados")
+    public ModelAndView mostrarDeshabilitados(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("clientes");
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+
+        if(flashMap != null) {
+            mav.addObject("exito", flashMap.get("exito"));
+            mav.addObject("error", flashMap.get("error"));
+        }
+        mav.addObject("accion", "habilitar");
+        mav.addObject("titulo", "Lista de clientes deshabilitados");
+        mav.addObject("clientes", clienteService.buscarDeshabilitados());
         return mav;
     }
 
@@ -98,6 +114,16 @@ public class ClienteController {
         return new RedirectView("/clientes");
     }
 
+    @PostMapping("/habilitar/{id}")
+    public RedirectView habilitar(@PathVariable Integer id, RedirectAttributes redirectAttributes){
+        try {
+            clienteService.habilitar(id);
+            redirectAttributes.addFlashAttribute("exito", "El cliente se eliminó correctamente.");
+        } catch (MiException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return new RedirectView("/clientes/deshabilitados");
+    }
 
 
 }

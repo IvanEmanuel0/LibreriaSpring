@@ -26,8 +26,13 @@ public class LibroService {
     private LibroRepository libroRepository;
 
     @Transactional(readOnly = true)
-    public List<Libro> buscarTodos() {
-        return libroRepository.findAll();
+    public List<Libro> buscarHabilitados() {
+        return libroRepository.librosDeAlta();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Libro> buscarDeshabilitados() {
+        return libroRepository.librosDeBaja();
     }
 
     @Transactional(readOnly = true)
@@ -89,4 +94,17 @@ public class LibroService {
             throw e;
         }
     }
+
+    @Transactional
+    public void habilitar(Integer id) throws MiException {
+        try {
+            Util.esNumero(Integer.toString(id));
+            Libro libro = buscarPorId(id);
+            libro.setAlta(true);
+            libroRepository.save(libro);
+        } catch (MiException e) {
+            throw e;
+        }
+    }
+
 }

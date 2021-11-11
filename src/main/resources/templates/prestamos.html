@@ -49,10 +49,11 @@
                                     <td th:text="${prestamo.libro.titulo}"></td>
                                     <td th:text="${prestamo.cliente.nombre}"></td>
                                     <td class="col-md-4 px-md-2 d-flex justify-content-around w-100">
-                                        <a class="btn btn-secondary btn-sm" th:href="@{/prestamos/editar/__${prestamo.id}__}">Editar</a>
-                                        <form method="post" th:action="@{/prestamos/eliminar/__${prestamo.id}__}">
-                                            <button class="btn btn-danger btn-sm" type="submit">
-                                                Eliminar
+                                        <a th:if="${accion == 'eliminar'}" class="btn btn-secondary btn-sm" th:href="@{/prestamos/editar/__${prestamo.id}__}">Editar</a>
+                                        <form method="post" th:action="@{/prestamos/__${accion}__/__${prestamo.id}__}">
+                                            <button th:text="${accion == 'eliminar'} ? 'Deshabilitar' : 'Habilitar'"
+                                                    th:classappend="${accion == 'eliminar'} ? 'btn-danger' : 'btn-success'"
+                                                    class="btn btn-sm" type="submit">
                                             </button>
                                         </form>
                                     </td>

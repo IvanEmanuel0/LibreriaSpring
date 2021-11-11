@@ -1,9 +1,21 @@
 package egg.libreria.model.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
+@Setter
+@Getter
+@EntityListeners(AuditingEntityListener.class)
+@SQLDelete(sql = "UPDATE Cliente c SET c.alta = false WHERE c.id = ?")
 public class Cliente {
 
     @Id
@@ -19,6 +31,11 @@ public class Cliente {
     private String telefono;
     @Column(nullable = false)
     private Boolean alta;
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime creacion;
+    @LastModifiedDate
+    private LocalDateTime modificacion;
 
     public Cliente() {
     }
@@ -31,51 +48,4 @@ public class Cliente {
         this.alta = alta;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Long getDni() {
-        return dni;
-    }
-
-    public void setDni(Long dni) {
-        this.dni = dni;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public Boolean getAlta() {
-        return alta;
-    }
-
-    public void setAlta(Boolean alta) {
-        this.alta = alta;
-    }
 }

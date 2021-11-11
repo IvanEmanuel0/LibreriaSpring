@@ -18,8 +18,13 @@ public class EditorialService {
     private EditorialRepository editorialRepository;
 
     @Transactional(readOnly = true)
-    public List<Editorial> buscarTodos() {
-        return editorialRepository.findAll();
+    public List<Editorial> buscarHabilitados() {
+        return editorialRepository.editorialesDeAlta();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Editorial> buscarDeshabilitados() {
+        return editorialRepository.editorialesDeBaja();
     }
 
     @Transactional(readOnly = true)
@@ -70,5 +75,17 @@ public class EditorialService {
             throw e;
         }
     }
-    
+
+    @Transactional
+    public void habilitar(Integer id) throws MiException {
+        try {
+            Util.esNumero(Integer.toString(id));
+            Editorial editorial = buscarPorId(id);
+            editorial.setAlta(true);
+            editorialRepository.save(editorial);
+        } catch (MiException e) {
+            throw e;
+        }
+    }
+
 }

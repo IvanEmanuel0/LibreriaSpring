@@ -34,12 +34,27 @@ public class EditorialController {
             mav.addObject("exito", flashMap.get("exito"));
             mav.addObject("error", flashMap.get("error"));
         }
-
+        mav.addObject("accion", "eliminar");
         mav.addObject("titulo", "Lista de Editoriales");
-        mav.addObject("editoriales", editorialService.buscarTodos());
+        mav.addObject("editoriales", editorialService.buscarHabilitados());
         return mav;
     }
-    
+
+    @GetMapping("/deshabilitados")
+    public ModelAndView mostrarDeshabilitados(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("editoriales");
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+
+        if(flashMap != null) {
+            mav.addObject("exito", flashMap.get("exito"));
+            mav.addObject("error", flashMap.get("error"));
+        }
+        mav.addObject("accion", "habilitar");
+        mav.addObject("titulo", "Lista de Editoriales Deshabilitadas");
+        mav.addObject("editoriales", editorialService.buscarDeshabilitados());
+        return mav;
+    }
+
     @GetMapping("/crear")
     public ModelAndView crearAutor(){
         ModelAndView mav = new ModelAndView("editorial-formulario");
@@ -103,5 +118,16 @@ public class EditorialController {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
         return new RedirectView("/editoriales");
+    }
+
+    @PostMapping("/habilitar/{id}")
+    public RedirectView habilitar(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
+        try {
+            editorialService.habilitar(id);
+            redirectAttributes.addFlashAttribute("exito", "La editorial se eliminó correctamente.");
+        } catch(MiException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return new RedirectView("/editoriales/deshabilitados");
     }
 }

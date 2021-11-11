@@ -36,8 +36,24 @@ public class AutorController {
             mav.addObject("exito", flashMap.get("exito"));
             mav.addObject("error", flashMap.get("error"));
         }
+        mav.addObject("accion", "eliminar");
+        mav.addObject("autores", autorService.buscarHabilitados());
+        mav.addObject("titulo", "Lista de Autores");
+        return mav;
+    }
 
-        mav.addObject("autores", autorService.buscarTodos());
+    @GetMapping("/deshabilitados")
+    public ModelAndView mostrarDeshabilitados(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("autores");
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+
+        if(flashMap != null) {
+            mav.addObject("exito", flashMap.get("exito"));
+            mav.addObject("error", flashMap.get("error"));
+        }
+        mav.addObject("autores", autorService.buscarDeshabilitados());
+        mav.addObject("accion", "habilitar");
+        mav.addObject("titulo", "Lista de Autores Deshabilitados");
         return mav;
     }
     
@@ -101,10 +117,22 @@ public class AutorController {
     public RedirectView eliminar(@PathVariable Integer id, RedirectAttributes redirectAttributes){
         try {
             autorService.eliminar(id);
-            redirectAttributes.addFlashAttribute("exito", "El autor se elimino correctamente.");
+            redirectAttributes.addFlashAttribute("exito", "El autor se dio de baja correctamente.");
         } catch(MiException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
         return new RedirectView("/autores");
     }
+
+    @PostMapping("/habilitar/{id}")
+    public RedirectView habilitar(@PathVariable Integer id, RedirectAttributes redirectAttributes){
+        try {
+            autorService.habilitar(id);
+            redirectAttributes.addFlashAttribute("exito", "El autor se dio de alta correctamente.");
+        } catch(MiException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return new RedirectView("/autores/deshabilitados");
+    }
+
 }

@@ -24,8 +24,13 @@ public class PrestamoService {
     private PrestamoRepository prestamoRepository;
 
     @Transactional(readOnly = true)
-    public List<Prestamo> buscarTodos() {
-        return prestamoRepository.findAll();
+    public List<Prestamo> buscarHabilitados() {
+        return prestamoRepository.prestamosDeAlta();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Prestamo> buscarDeshabilitados() {
+        return prestamoRepository.prestamosDeBaja();
     }
 
     @Transactional(readOnly = true)
@@ -79,6 +84,20 @@ public class PrestamoService {
         try {
             Util.esNumero(Integer.toString(id));
             prestamoRepository.deleteById(id);
+        } catch (MiException e) {
+            throw e;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    @Transactional
+    public void habilitar(Integer id) throws MiException {
+        try {
+            Util.esNumero(Integer.toString(id));
+            Prestamo prestamo = buscarPorId(id);
+            prestamo.setAlta(true);
+            prestamoRepository.save(prestamo);
         } catch (MiException e) {
             throw e;
         } catch (Exception e) {

@@ -44,8 +44,24 @@ public class PrestamoController {
             mav.addObject("exito", flashMap.get("exito"));
             mav.addObject("error", flashMap.get("error"));
         }
+        mav.addObject("accion", "eliminar");
+        mav.addObject("titulo", "Lista de Prestamos");
+        mav.addObject("prestamos", prestamoService.buscarHabilitados());
+        return mav;
+    }
 
-        mav.addObject("prestamos", prestamoService.buscarTodos());
+    @GetMapping("/deshabilitados")
+    public ModelAndView mostrarDeshabilitados(HttpServletRequest request) {
+        ModelAndView mav = new ModelAndView("prestamos");
+        Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
+
+        if(flashMap != null){
+            mav.addObject("exito", flashMap.get("exito"));
+            mav.addObject("error", flashMap.get("error"));
+        }
+        mav.addObject("accion", "habilitar");
+        mav.addObject("titulo", "Lista de Prestamos deshabilitados");
+        mav.addObject("prestamos", prestamoService.buscarDeshabilitados());
         return mav;
     }
 
@@ -53,8 +69,8 @@ public class PrestamoController {
     public ModelAndView crearPrestamo() {
         ModelAndView mav = new ModelAndView("prestamo-formulario");
         mav.addObject("prestamo", new Prestamo());
-        mav.addObject("libros", libroService.buscarTodos());
-        mav.addObject("clientes", clienteService.buscarTodos());
+        mav.addObject("libros", libroService.buscarHabilitados());
+        mav.addObject("clientes", clienteService.buscarHabilitados());
         mav.addObject("titulo", "Crear Prestamo");
         mav.addObject("accion", "guardar");
         return mav;
@@ -68,8 +84,8 @@ public class PrestamoController {
         } catch (MiException e) {
             mav.addObject("error", e.getMessage());
         }
-        mav.addObject("libros", libroService.buscarTodos());
-        mav.addObject("clientes", clienteService.buscarTodos());
+        mav.addObject("libros", libroService.buscarHabilitados());
+        mav.addObject("clientes", clienteService.buscarHabilitados());
         mav.addObject("titulo", "Editar Prestamo");
         mav.addObject("accion", "modificar");
         return mav;
@@ -104,11 +120,23 @@ public class PrestamoController {
         try {
             Util.esNumero(Integer.toString(id));
             prestamoService.eliminar(id);
-            redirectAttributes.addFlashAttribute("exito", "El prestamo se elimino correctamente.");
+            redirectAttributes.addFlashAttribute("exito", "El prestamo se dio de alta correctamente.");
         } catch (MiException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
         }
         return new RedirectView("/prestamos");
+    }
+
+    @PostMapping("/habilitar/{id}")
+    public RedirectView habilitar(@PathVariable Integer id, RedirectAttributes redirectAttributes) throws MiException {
+        try {
+            Util.esNumero(Integer.toString(id));
+            prestamoService.habilitar(id);
+            redirectAttributes.addFlashAttribute("exito", "El prestamo se dio de baja correctamente.");
+        } catch (MiException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return new RedirectView("/prestamos/deshabilitados");
     }
 
 }

@@ -1,13 +1,23 @@
 package egg.libreria.model.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity 
-
+@Setter
+@Getter
+@EntityListeners(AuditingEntityListener.class)
+@SQLDelete(sql = "UPDATE Editorial e SET e.alta = false WHERE e.id = ?")
 public class Editorial {
     
     @Id
@@ -15,6 +25,11 @@ public class Editorial {
     private Integer id;
     @Column(nullable = false)
     private String nombre;
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime creacion;
+    @LastModifiedDate
+    private LocalDateTime modificacion;
     @Column(nullable = false)
     private Boolean alta;
     @OneToMany(mappedBy = "editorial", fetch = FetchType.EAGER)
@@ -29,35 +44,5 @@ public class Editorial {
         this.alta = alta;
     }
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Boolean getAlta() {
-        return alta;
-    }
-
-    public void setAlta(Boolean alta) {
-        this.alta = alta;
-    }
-
-    public List<Libro> getLibros() {
-        return libros;
-    }
-
-    public void setLibros(List<Libro> libros) {
-        this.libros = libros;
-    }
 }

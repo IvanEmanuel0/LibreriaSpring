@@ -1,17 +1,22 @@
 package egg.libreria.model.entity;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
+@Setter
+@Getter
+@EntityListeners(AuditingEntityListener.class)
+@SQLDelete(sql = "UPDATE Libro l SET l.alta = false WHERE l.id = ?")
 public class Libro {
     
     @Id
@@ -35,6 +40,11 @@ public class Libro {
     private Autor autor;
     @ManyToOne 
     private Editorial editorial;
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime creacion;
+    @LastModifiedDate
+    private  LocalDateTime modificacion;
 
     public Libro(Long isbn, String titulo, Integer anio, Integer ejemplares, Boolean alta, Autor autor, Editorial editorial) {
         this.isbn = isbn;
@@ -52,83 +62,4 @@ public class Libro {
 
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Long getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(Long isbn) {
-        this.isbn = isbn;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public Integer getAnio() {
-        return anio;
-    }
-
-    public void setAnio(Integer anio) {
-        this.anio = anio;
-    }
-
-    public Integer getEjemplares() {
-        return ejemplares;
-    }
-
-    public void setEjemplares(Integer ejemplares) {
-        this.ejemplares = ejemplares;
-    }
-
-    public Integer getEjemplaresPrestados() {
-        return ejemplaresPrestados;
-    }
-
-    public void setEjemplaresPrestados(Integer ejemplaresPrestados) {
-        this.ejemplaresPrestados = ejemplaresPrestados;
-    }
-
-    public Integer getEjemplaresRestantes() {
-        return ejemplaresRestantes;
-    }
-
-    public void setEjemplaresRestantes(Integer ejemplaresRestantes) {
-        this.ejemplaresRestantes = ejemplaresRestantes;
-    }
-
-    public Boolean getAlta() {
-        return alta;
-    }
-
-    public void setAlta(Boolean alta) {
-        this.alta = alta;
-    }
-
-    public Autor getAutor() {
-        return autor;
-    }
-
-    public void setAutor(Autor autor) {
-        this.autor = autor;
-    }
-
-    public Editorial getEditorial() {
-        return editorial;
-    }
-
-    public void setEditorial(Editorial editorial) {
-        this.editorial = editorial;
-    }
 }

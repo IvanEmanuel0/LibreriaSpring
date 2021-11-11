@@ -52,10 +52,11 @@
                                     <td th:text="${libro.autor.nombre}"></td>
                                     <td th:text="${libro.editorial.nombre}"></td>
                                     <td class="col-md-4 px-md-2 d-flex justify-content-around w-100">
-                                        <a class="btn btn-secondary btn-sm" th:href="@{/libros/editar/__${libro.id}__}">Editar</a>
-                                        <form method="post" th:action="@{/libros/eliminar/__${libro.id}__}">
-                                            <button class="btn btn-danger btn-sm" type="submit">
-                                                Eliminar
+                                        <a th:if="${accion == 'eliminar'}" class="btn btn-secondary btn-sm" th:href="@{/libros/editar/__${libro.id}__}">Editar</a>
+                                        <form method="post" th:action="@{/libros/__${accion}__/__${libro.id}__}">
+                                            <button th:text="${accion == 'eliminar'} ? 'Deshabilitar' : 'Habilitar'"
+                                                    th:classappend="${accion == 'eliminar'} ? 'btn-danger' : 'btn-success'"
+                                                    class="btn btn-sm" type="submit">
                                             </button>
                                         </form>
                                     </td>

@@ -19,8 +19,13 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     @Transactional(readOnly = true)
-    public List<Cliente> buscarTodos() {
-        return clienteRepository.findAll();
+    public List<Cliente> buscarHabilitados() {
+        return clienteRepository.clientesDeAlta();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Cliente> buscarDeshabilitados() {
+        return clienteRepository.clientesDeBaja();
     }
 
     @Transactional(readOnly = true)
@@ -84,4 +89,17 @@ public class ClienteService {
             throw e;
         }
     }
+
+    @Transactional
+    public void habilitar(Integer id) throws MiException {
+        try {
+            Util.esNumero(Integer.toString(id));
+            Cliente cliente = buscarPorId(id);
+            cliente.setAlta(true);
+            clienteRepository.save(cliente);
+        } catch (MiException e) {
+            throw e;
+        }
+    }
+
 }
