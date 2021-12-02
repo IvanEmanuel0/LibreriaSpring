@@ -36,16 +36,21 @@ public class Cliente {
     private LocalDateTime creacion;
     @LastModifiedDate
     private LocalDateTime modificacion;
+    @JoinColumn(nullable = false)
+    @OneToOne
+    private Usuario usuario;
 
     public Cliente() {
+
     }
 
-    public Cliente(Long dni, String nombre, String apellido, String telefono, Boolean alta) {
+    public Cliente(Long dni, String nombre, String apellido, String telefono, Boolean alta, Usuario usuario) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
         this.alta = alta;
+        this.usuario = usuario;
     }
 
 }

@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title}"></title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"/>
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <title>Title</title>
 </head>
 <body>
-
 <nav th:replace="layout::navbar"></nav>
 <div class="container vh-100 d-flex align-items-center justify-content-center">
     <div class="row">
@@ -20,43 +15,43 @@
             <div th:text="${logout}" class="alert alert-success shadow"></div>
         </div>
         <div class="col-12 p-5 bg-contenido">
-            <h1>Registro</h1>
             <form method="POST" autocomplete="off" class="needs-validation" id="formulario"
-                  th:action="@{/clientes/__${accion}__}">
+                  th:action="@{/clientes/__${accion}__}" th:object="${cliente}">
                 <div class="row">
                     <div class="col-12">
-                        <input th:value="${id}" type="hidden">
+                        <input th:field="*{id}" type="hidden">
                         <div th:if="${error != null}" th:text="${error}" class="col-4 alert-danger fade show" role="alert"></div>
                         <div class="row pt-5 pb-4">
                             <div class="col-6">
                                 <div class="fo rm-floating">
-                                    <input placeholder="DNI" required name="dni" th:value="${dni}" class="form-control" id="dni" type="text">
+                                    <input placeholder="DNI" required th:field="*{dni}" class="form-control" id="dni" type="text">
                                     <label for="dni"></label>
                                     <div class="invalid-feedback">El DNI es obligatorio</div>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="fo rm-floating">
-                                    <input placeholder="Nombre" required name="nombre" th:value="${nombre}" class="form-control" id="nombre" type="text">
+                                    <input placeholder="Nombre" required th:field="*{nombre}" class="form-control" id="nombre" type="text">
                                     <label for="nombre"></label>
                                     <div class="invalid-feedback">El nombre es obligatorio</div>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="fo rm-floating">
-                                    <input placeholder="Apellido" required name="apellido" th:value="${apellido}" class="form-control" id="apellido" type="text">
+                                    <input placeholder="Apellido" required th:field="*{apellido}" class="form-control" id="apellido" type="text">
                                     <label for="apellido"></label>
                                     <div class="invalid-feedback">El apellido es obligatorio</div>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="f orm-floating">
-                                    <input placeholder="Telefono" required name="telefono" th:value="${telefono}" class="form-control" id="telefono" type="text">
+                                    <input placeholder="Telefono" required th:field="*{telefono}" class="form-control" id="telefono" type="text">
                                     <label for="telefono"></label>
                                     <div class="invalid-feedback">El telefono es obligatorio</div>
                                 </div>
                             </div>
                             <h2>Datos de la cuenta</h2>
+                            <h1>ESTE NO SE ABRE</h1>
                             <div class="col-6">
                                 <div class="fo rm-floating">
                                     <input placeholder="Usuario" name="username" class="form-control" id="username" type="text">
@@ -85,20 +80,5 @@
         </div>
     </div>
 </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-            crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-            crossorigin="anonymous"></script>
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/script.js"></script>
 </body>
 </html>

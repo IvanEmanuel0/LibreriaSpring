@@ -2,6 +2,7 @@ package egg.libreria.service;
 
 import egg.libreria.exception.MiException;
 import egg.libreria.model.entity.Cliente;
+import egg.libreria.model.entity.Usuario;
 import egg.libreria.repository.ClienteRepository;
 import egg.libreria.utilities.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Transactional(readOnly = true)
     public List<Cliente> buscarHabilitados() {
@@ -42,13 +45,14 @@ public class ClienteService {
     }
 
     @Transactional
-    public void crear(Long dni, String nombre, String apellido, String telefono) throws MiException {
+    public void crear(Long dni, String nombre, String apellido, String telefono, String username, String clave) throws MiException {
         try {
             Util.validarDNI(Long.toString(dni));
             Util.sonLetras(nombre);
             Util.sonLetras(apellido);
             Util.esNumero(telefono);
-            clienteRepository.save(new Cliente(dni, nombre, apellido, telefono, true));
+            usuarioService.crear(username, clave);
+            clienteRepository.save(new Cliente(dni, nombre, apellido, telefono, true, usuarioService.buscarPorUsername(username)));
         } catch (MiException e) {
             throw e;
         } catch (Exception e) {

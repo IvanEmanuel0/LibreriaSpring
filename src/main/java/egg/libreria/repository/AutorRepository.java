@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface AutorRepository extends JpaRepository<Autor, Integer>{
 
-    @Modifying
+   /* @Modifying
     @Query("UPDATE Autor a SET a.nombre = :nombre WHERE a.id = :id")
-    void modificar(@Param("id") Integer id, @Param("nombre") String nombre);
+    void modificar(@Param("id") Integer id, @Param("nombre") String nombre);*/
 
     @Query("SELECT a FROM Autor a WHERE a.alta=true")
     List<Autor> autoresDeAlta();

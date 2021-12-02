@@ -76,7 +76,9 @@ public class AutorService {
         try {
             Util.esNumero(Integer.toString(id));
             Util.sonLetras(nombre);
-            autorRepository.modificar(id, nombre);
+            Autor autor = buscarPorId(id);
+            autor.setNombre(nombre);
+            autorRepository.save(autor);
         } catch(MiException e){
             throw e;
         }

@@ -11,9 +11,9 @@ import java.util.List;
 
 public interface EditorialRepository extends JpaRepository<Editorial, Integer> {
 
-    @Modifying
+    /*@Modifying
     @Query("UPDATE Editorial e SET e.nombre = :nombre WHERE e.id = :id")
-    void modificar(@Param("id") Integer id, @Param("nombre") String nombre);
+    void modificar(@Param("id") Integer id, @Param("nombre") String nombre);*/
 
     @Query("SELECT e FROM Editorial e WHERE e.alta=true")
     List<Editorial> editorialesDeAlta();

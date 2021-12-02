@@ -56,7 +56,9 @@ public class EditorialService {
         try {
             Util.esNumero(Integer.toString(id));
             Util.sonLetras(nombre);
-            editorialRepository.modificar(id, nombre);
+            Editorial editorial = buscarPorId(id);
+            editorial.setAlta(true);
+            editorialRepository.save(editorial);
         } catch (MiException e) {
             throw e;
         } catch (Exception e) {

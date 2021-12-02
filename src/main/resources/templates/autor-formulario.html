@@ -32,11 +32,11 @@
                                                 <div th:if="${error != null}" th:text="${error}" class="col-4 small alert-danger fade show" role="alert"></div>
                                                 <div class="invalid-feedback">El nombre es obligatorio</div>
                                             </div>
-
                                             <div class="row">
                                                 <div class="col-xl-3">
                                                     <button class="btn btn-success mt-5" th:text="${action == 'guardar'} ? 'Crear autor' : 'Guardar cambios'"
-                                                            type="submit"></button>
+                                                            type="submit">
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>

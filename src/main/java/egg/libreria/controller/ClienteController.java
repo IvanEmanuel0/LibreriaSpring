@@ -2,10 +2,10 @@ package egg.libreria.controller;
 
 import egg.libreria.exception.MiException;
 import egg.libreria.model.entity.Cliente;
+import egg.libreria.model.entity.Usuario;
 import egg.libreria.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.Map;
 
 @Controller
@@ -55,9 +56,10 @@ public class ClienteController {
     @GetMapping("/crear")
     public ModelAndView crearCliente(){
         ModelAndView mav = new ModelAndView("cliente-formulario");
-        mav.addObject("cliente", new Cliente());
+        //mav.addObject("cliente", new Cliente());
         mav.addObject("titulo", "Crear cliente");
         mav.addObject("accion", "guardar");
+        //if (principal != null) mav.setViewName("redirect:/");
         return mav;
     }
 
@@ -75,10 +77,10 @@ public class ClienteController {
     }
 
     @PostMapping("/guardar")
-    public RedirectView guardar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam String telefono, RedirectAttributes redirectAttributes){
+    public RedirectView guardar(@RequestParam Long dni, @RequestParam String nombre, @RequestParam String apellido, @RequestParam String telefono, @RequestParam String username, @RequestParam String clave, RedirectAttributes redirectAttributes){
         RedirectView redirectView = new RedirectView("/clientes");
         try {
-            clienteService.crear(dni, nombre, apellido, telefono);
+            clienteService.crear(dni, nombre, apellido, telefono, username, clave);
             redirectAttributes.addFlashAttribute("exito", "El cliente se registró correctamente.");
         } catch (MiException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
